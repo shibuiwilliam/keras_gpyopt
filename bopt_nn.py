@@ -179,7 +179,7 @@ def f(x):
 
 # #### Optimizer instance
 
-# In[ ]:
+# In[7]:
 
 # optimizer
 opt_mnist = GPyOpt.methods.BayesianOptimization(f=f, domain=bounds)
@@ -187,7 +187,7 @@ opt_mnist = GPyOpt.methods.BayesianOptimization(f=f, domain=bounds)
 
 # #### Running optimization
 
-# In[ ]:
+# In[8]:
 
 # optimize mnist model
 opt_mnist.run_optimization(max_iter=10)
@@ -195,16 +195,11 @@ opt_mnist.run_optimization(max_iter=10)
 
 # #### The output
 
-# In[ ]:
+# In[15]:
 
 # print optimized mnist model
-print("optimized parameters: {0}".format(opt_mnist.x_opt()))
+print("optimized parameters: {0}".format(opt_mnist.x_opt))
 print("optimized loss: {0}".format(opt_mnist.fx_opt))
-
-
-# In[ ]:
-
-
 
 
 # In[ ]:
