@@ -18,7 +18,7 @@
 
 # #### Import libraries
 
-# In[21]:
+# In[2]:
 
 import GPy, GPyOpt
 import numpy as np
@@ -41,7 +41,7 @@ from keras.callbacks import EarlyStopping
 # #### Define MNIST model
 # * includes data loading function, training function, fit function and evaluation function 
 
-# In[22]:
+# In[3]:
 
 # MNIST class
 class MNIST():
@@ -123,7 +123,7 @@ class MNIST():
 
 # #### Runner function for the MNIST model
 
-# In[11]:
+# In[4]:
 
 # function to run mnist class
 def run_mnist(first_input=784, last_output=10,
@@ -144,7 +144,7 @@ def run_mnist(first_input=784, last_output=10,
 # ## Bayesian Optimization
 # #### bounds for hyper parameters
 
-# In[12]:
+# In[5]:
 
 # bounds for hyper-parameters in mnist model
 # the bounds dict should be in order of continuous type and then discrete type
@@ -159,16 +159,16 @@ bounds = [{'name': 'validation_split', 'type': 'continuous',  'domain': (0.0, 0.
 
 # #### Bayesian Optimization
 
-# In[13]:
+# In[6]:
 
 # function to optimize mnist model
 def f(x):
     print(x)
     evaluation = run_mnist(
-        l1_out = int(x[:,1]), 
-        l2_out = int(x[:,2]), 
-        l1_drop = float(x[:,3]),
-        l2_drop = float(x[:,4]), 
+        l1_drop = int(x[:,1]), 
+        l2_drop = int(x[:,2]), 
+        l1_out = float(x[:,3]),
+        l2_out = float(x[:,4]), 
         batch_size = int(x[:,5]), 
         epochs = int(x[:,6]), 
         validation_split = float(x[:,0]))
@@ -179,7 +179,7 @@ def f(x):
 
 # #### Optimizer instance
 
-# In[14]:
+# In[ ]:
 
 # optimizer
 opt_mnist = GPyOpt.methods.BayesianOptimization(f=f, domain=bounds)
@@ -187,7 +187,7 @@ opt_mnist = GPyOpt.methods.BayesianOptimization(f=f, domain=bounds)
 
 # #### Running optimization
 
-# In[15]:
+# In[ ]:
 
 # optimize mnist model
 opt_mnist.run_optimization(max_iter=10)
@@ -195,10 +195,10 @@ opt_mnist.run_optimization(max_iter=10)
 
 # #### The output
 
-# In[16]:
+# In[ ]:
 
 # print optimized mnist model
-print("optimized parameters: {0}".format(opt_mnist.x_opt))
+print("optimized parameters: {0}".format(opt_mnist.x_opt()))
 print("optimized loss: {0}".format(opt_mnist.fx_opt))
 
 
