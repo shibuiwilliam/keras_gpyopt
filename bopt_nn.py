@@ -18,7 +18,8 @@
 
 # #### Import libraries
 
-# In[2]:
+# In[1]:
+
 
 import GPy, GPyOpt
 import numpy as np
@@ -33,15 +34,11 @@ from keras.optimizers import Adam
 from keras.callbacks import EarlyStopping
 
 
-# In[ ]:
-
-
-
-
 # #### Define MNIST model
 # * includes data loading function, training function, fit function and evaluation function 
 
-# In[3]:
+# In[2]:
+
 
 # MNIST class
 class MNIST():
@@ -116,14 +113,10 @@ class MNIST():
         return evaluation
 
 
-# In[ ]:
-
-
-
-
 # #### Runner function for the MNIST model
 
-# In[4]:
+# In[3]:
+
 
 # function to run mnist class
 def run_mnist(first_input=784, last_output=10,
@@ -140,15 +133,11 @@ def run_mnist(first_input=784, last_output=10,
     return mnist_evaluation
 
 
-# In[ ]:
-
-
-
-
 # ## Bayesian Optimization
 # #### bounds for hyper parameters
 
-# In[5]:
+# In[4]:
+
 
 # bounds for hyper-parameters in mnist model
 # the bounds dict should be in order of continuous type and then discrete type
@@ -163,27 +152,29 @@ bounds = [{'name': 'validation_split', 'type': 'continuous',  'domain': (0.0, 0.
 
 # #### Bayesian Optimization
 
-# In[6]:
+# In[5]:
+
 
 # function to optimize mnist model
 def f(x):
     print(x)
     evaluation = run_mnist(
-        l1_drop = int(x[:,1]), 
-        l2_drop = int(x[:,2]), 
-        l1_out = float(x[:,3]),
-        l2_out = float(x[:,4]), 
+        l1_drop = float(x[:,1]), 
+        l2_drop = float(x[:,2]), 
+        l1_out = int(x[:,3]),
+        l2_out = int(x[:,4]), 
         batch_size = int(x[:,5]), 
         epochs = int(x[:,6]), 
         validation_split = float(x[:,0]))
-    print("loss:{0} \t\t accuracy:{1}".format(evaluation[0], evaluation[1]))
+    print("LOSS:\t{0} \t ACCURACY:\t{1}".format(evaluation[0], evaluation[1]))
     print(evaluation)
     return evaluation[0]
 
 
 # #### Optimizer instance
 
-# In[7]:
+# In[6]:
+
 
 # optimizer
 opt_mnist = GPyOpt.methods.BayesianOptimization(f=f, domain=bounds)
@@ -191,7 +182,8 @@ opt_mnist = GPyOpt.methods.BayesianOptimization(f=f, domain=bounds)
 
 # #### Running optimization
 
-# In[8]:
+# In[7]:
+
 
 # optimize mnist model
 opt_mnist.run_optimization(max_iter=10)
@@ -199,14 +191,31 @@ opt_mnist.run_optimization(max_iter=10)
 
 # #### The output
 
-# In[15]:
+# In[20]:
+
 
 # print optimized mnist model
-print("optimized parameters: {0}".format(opt_mnist.x_opt))
+print("""
+Optimized Parameters:
+\t{0}:\t{1}
+\t{2}:\t{3}
+\t{4}:\t{5}
+\t{6}:\t{7}
+\t{8}:\t{9}
+\t{10}:\t{11}
+\t{12}:\t{13}
+""".format(bounds[0]["name"],opt_mnist.x_opt[0],
+           bounds[1]["name"],opt_mnist.x_opt[1],
+           bounds[2]["name"],opt_mnist.x_opt[2],
+           bounds[3]["name"],opt_mnist.x_opt[3],
+           bounds[4]["name"],opt_mnist.x_opt[4],
+           bounds[5]["name"],opt_mnist.x_opt[5],
+           bounds[6]["name"],opt_mnist.x_opt[6]))
 print("optimized loss: {0}".format(opt_mnist.fx_opt))
 
 
-# In[ ]:
+# In[21]:
 
 
+opt_mnist.x_opt
 
