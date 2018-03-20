@@ -131,7 +131,11 @@ def run_mnist(first_input=784, last_output=10,
               l1_drop=0.2, l2_drop=0.2, 
               batch_size=100, epochs=10, validation_split=0.1):
     
-    _mnist = MNIST()
+    _mnist = MNIST(first_input=first_input, last_output=last_output,
+                   l1_out=l1_out, l2_out=l2_out, 
+                   l1_drop=l1_drop, l2_drop=l2_drop, 
+                   batch_size=batch_size, epochs=epochs, 
+                   validation_split=validation_split)
     mnist_evaluation = _mnist.mnist_evaluate()
     return mnist_evaluation
 
